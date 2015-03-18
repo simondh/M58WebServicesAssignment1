@@ -67,7 +67,7 @@ public class Users {
         return userMap.size();
     }
 
-    public List<String> listUsers() {
+    public List<String> listUserNames() {
         // returns a list of user names
         List<String> users = new ArrayList<String>();
         for (User u : userMap.values()) {
@@ -96,12 +96,18 @@ public class Users {
         // so only deleted if no activity seen eg exited, network disconnect
         // Should be run as a thread
         while (true) {
-            for (User u : userMap.values()) {
+
+            Iterator entries = userMap.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry entry = (Map.Entry) entries.next();
+                String key = (String)entry.getKey();
+                User u = (User)entry.getValue();
                 if (u.tick() > timeoutThreshold) {
-                    System.err.println("User : " + u.getUserName() + "timeout, will be erased");
-                    userMap.remove(u);
+                    System.err.println("User : " + key + " timed out and deleted" + this.userCount() + " users connected");
+                    entries.remove();
                 }
             }
+
             try {
                 Thread.sleep(timeoutMillis);
             } catch (InterruptedException e){

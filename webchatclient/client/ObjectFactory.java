@@ -24,18 +24,20 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _AddMessageResponse_QNAME = new QName("http://chatserver/", "addMessageResponse");
     private final static QName _AllMessages_QNAME = new QName("http://chatserver/", "allMessages");
     private final static QName _LogOff_QNAME = new QName("http://chatserver/", "logOff");
     private final static QName _PrivateMessage_QNAME = new QName("http://chatserver/", "privateMessage");
+    private final static QName _AdminSignOnOffResponse_QNAME = new QName("http://chatserver/", "adminSignOnOffResponse");
+    private final static QName _ListUsers_QNAME = new QName("http://chatserver/", "listUsers");
+    private final static QName _ListUsersResponse_QNAME = new QName("http://chatserver/", "listUsersResponse");
+    private final static QName _LogOnResponse_QNAME = new QName("http://chatserver/", "logOnResponse");
+    private final static QName _AddMessageResponse_QNAME = new QName("http://chatserver/", "addMessageResponse");
     private final static QName _AddMessage_QNAME = new QName("http://chatserver/", "addMessage");
-    private final static QName _AdminSigOnOff_QNAME = new QName("http://chatserver/", "adminSigOnOff");
-    private final static QName _AdminSigOnOffResponse_QNAME = new QName("http://chatserver/", "adminSigOnOffResponse");
     private final static QName _LogOffResponse_QNAME = new QName("http://chatserver/", "logOffResponse");
     private final static QName _PrivateMessageResponse_QNAME = new QName("http://chatserver/", "privateMessageResponse");
     private final static QName _LogOn_QNAME = new QName("http://chatserver/", "logOn");
     private final static QName _AllMessagesResponse_QNAME = new QName("http://chatserver/", "allMessagesResponse");
-    private final static QName _LogOnResponse_QNAME = new QName("http://chatserver/", "logOnResponse");
+    private final static QName _AdminSignOnOff_QNAME = new QName("http://chatserver/", "adminSignOnOff");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: client
@@ -53,11 +55,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link LogOnResponse }
+     * Create an instance of {@link AdminSignOnOff }
      * 
      */
-    public LogOnResponse createLogOnResponse() {
-        return new LogOnResponse();
+    public AdminSignOnOff createAdminSignOnOff() {
+        return new AdminSignOnOff();
     }
 
     /**
@@ -85,6 +87,54 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AddMessageResponse }
+     * 
+     */
+    public AddMessageResponse createAddMessageResponse() {
+        return new AddMessageResponse();
+    }
+
+    /**
+     * Create an instance of {@link AddMessage }
+     * 
+     */
+    public AddMessage createAddMessage() {
+        return new AddMessage();
+    }
+
+    /**
+     * Create an instance of {@link LogOnResponse }
+     * 
+     */
+    public LogOnResponse createLogOnResponse() {
+        return new LogOnResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListUsersResponse }
+     * 
+     */
+    public ListUsersResponse createListUsersResponse() {
+        return new ListUsersResponse();
+    }
+
+    /**
+     * Create an instance of {@link AdminSignOnOffResponse }
+     * 
+     */
+    public AdminSignOnOffResponse createAdminSignOnOffResponse() {
+        return new AdminSignOnOffResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListUsers }
+     * 
+     */
+    public ListUsers createListUsers() {
+        return new ListUsers();
+    }
+
+    /**
      * Create an instance of {@link AllMessages }
      * 
      */
@@ -106,47 +156,6 @@ public class ObjectFactory {
      */
     public PrivateMessage createPrivateMessage() {
         return new PrivateMessage();
-    }
-
-    /**
-     * Create an instance of {@link AddMessageResponse }
-     * 
-     */
-    public AddMessageResponse createAddMessageResponse() {
-        return new AddMessageResponse();
-    }
-
-    /**
-     * Create an instance of {@link AddMessage }
-     * 
-     */
-    public AddMessage createAddMessage() {
-        return new AddMessage();
-    }
-
-    /**
-     * Create an instance of {@link AdminSigOnOff }
-     * 
-     */
-    public AdminSigOnOff createAdminSigOnOff() {
-        return new AdminSigOnOff();
-    }
-
-    /**
-     * Create an instance of {@link AdminSigOnOffResponse }
-     * 
-     */
-    public AdminSigOnOffResponse createAdminSigOnOffResponse() {
-        return new AdminSigOnOffResponse();
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link AddMessageResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://chatserver/", name = "addMessageResponse")
-    public JAXBElement<AddMessageResponse> createAddMessageResponse(AddMessageResponse value) {
-        return new JAXBElement<AddMessageResponse>(_AddMessageResponse_QNAME, AddMessageResponse.class, null, value);
     }
 
     /**
@@ -177,30 +186,57 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AdminSignOnOffResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://chatserver/", name = "adminSignOnOffResponse")
+    public JAXBElement<AdminSignOnOffResponse> createAdminSignOnOffResponse(AdminSignOnOffResponse value) {
+        return new JAXBElement<AdminSignOnOffResponse>(_AdminSignOnOffResponse_QNAME, AdminSignOnOffResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListUsers }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://chatserver/", name = "listUsers")
+    public JAXBElement<ListUsers> createListUsers(ListUsers value) {
+        return new JAXBElement<ListUsers>(_ListUsers_QNAME, ListUsers.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ListUsersResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://chatserver/", name = "listUsersResponse")
+    public JAXBElement<ListUsersResponse> createListUsersResponse(ListUsersResponse value) {
+        return new JAXBElement<ListUsersResponse>(_ListUsersResponse_QNAME, ListUsersResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link LogOnResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://chatserver/", name = "logOnResponse")
+    public JAXBElement<LogOnResponse> createLogOnResponse(LogOnResponse value) {
+        return new JAXBElement<LogOnResponse>(_LogOnResponse_QNAME, LogOnResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AddMessageResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://chatserver/", name = "addMessageResponse")
+    public JAXBElement<AddMessageResponse> createAddMessageResponse(AddMessageResponse value) {
+        return new JAXBElement<AddMessageResponse>(_AddMessageResponse_QNAME, AddMessageResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link AddMessage }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://chatserver/", name = "addMessage")
     public JAXBElement<AddMessage> createAddMessage(AddMessage value) {
         return new JAXBElement<AddMessage>(_AddMessage_QNAME, AddMessage.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link AdminSigOnOff }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://chatserver/", name = "adminSigOnOff")
-    public JAXBElement<AdminSigOnOff> createAdminSigOnOff(AdminSigOnOff value) {
-        return new JAXBElement<AdminSigOnOff>(_AdminSigOnOff_QNAME, AdminSigOnOff.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link AdminSigOnOffResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://chatserver/", name = "adminSigOnOffResponse")
-    public JAXBElement<AdminSigOnOffResponse> createAdminSigOnOffResponse(AdminSigOnOffResponse value) {
-        return new JAXBElement<AdminSigOnOffResponse>(_AdminSigOnOffResponse_QNAME, AdminSigOnOffResponse.class, null, value);
     }
 
     /**
@@ -240,12 +276,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link LogOnResponse }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link AdminSignOnOff }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://chatserver/", name = "logOnResponse")
-    public JAXBElement<LogOnResponse> createLogOnResponse(LogOnResponse value) {
-        return new JAXBElement<LogOnResponse>(_LogOnResponse_QNAME, LogOnResponse.class, null, value);
+    @XmlElementDecl(namespace = "http://chatserver/", name = "adminSignOnOff")
+    public JAXBElement<AdminSignOnOff> createAdminSignOnOff(AdminSignOnOff value) {
+        return new JAXBElement<AdminSignOnOff>(_AdminSignOnOff_QNAME, AdminSignOnOff.class, null, value);
     }
 
 }

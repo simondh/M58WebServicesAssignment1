@@ -34,7 +34,6 @@ public class User {
 
     public void setAdminUser(boolean admin) {
         timeoutCount = 0;
-        System.out.println("Set admin user : " + admin);
         adminUser = admin;
     }
 

@@ -33,10 +33,10 @@ public interface ChatServer {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "logOff", targetNamespace = "http://chatserver/", className = "client.LogOff")
-    @ResponseWrapper(localName = "logOffResponse", targetNamespace = "http://chatserver/", className = "client.LogOffResponse")
-    @Action(input = "http://chatserver/ChatServer/logOffRequest", output = "http://chatserver/ChatServer/logOffResponse")
-    public boolean logOff(
+    @RequestWrapper(localName = "logOn", targetNamespace = "http://chatserver/", className = "client.LogOn")
+    @ResponseWrapper(localName = "logOnResponse", targetNamespace = "http://chatserver/", className = "client.LogOnResponse")
+    @Action(input = "http://chatserver/ChatServer/logOnRequest", output = "http://chatserver/ChatServer/logOnResponse")
+    public boolean logOn(
         @WebParam(name = "name", targetNamespace = "")
         String name);
 
@@ -48,10 +48,10 @@ public interface ChatServer {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "logOn", targetNamespace = "http://chatserver/", className = "client.LogOn")
-    @ResponseWrapper(localName = "logOnResponse", targetNamespace = "http://chatserver/", className = "client.LogOnResponse")
-    @Action(input = "http://chatserver/ChatServer/logOnRequest", output = "http://chatserver/ChatServer/logOnResponse")
-    public boolean logOn(
+    @RequestWrapper(localName = "logOff", targetNamespace = "http://chatserver/", className = "client.LogOff")
+    @ResponseWrapper(localName = "logOffResponse", targetNamespace = "http://chatserver/", className = "client.LogOffResponse")
+    @Action(input = "http://chatserver/ChatServer/logOffRequest", output = "http://chatserver/ChatServer/logOffResponse")
+    public boolean logOff(
         @WebParam(name = "name", targetNamespace = "")
         String name);
 
@@ -107,15 +107,33 @@ public interface ChatServer {
      * 
      * @param name
      * @param pwd
+     * @return
+     *     returns boolean
      */
     @WebMethod
-    @RequestWrapper(localName = "adminSigOnOff", targetNamespace = "http://chatserver/", className = "client.AdminSigOnOff")
-    @ResponseWrapper(localName = "adminSigOnOffResponse", targetNamespace = "http://chatserver/", className = "client.AdminSigOnOffResponse")
-    @Action(input = "http://chatserver/ChatServer/adminSigOnOffRequest", output = "http://chatserver/ChatServer/adminSigOnOffResponse")
-    public void adminSigOnOff(
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "adminSignOnOff", targetNamespace = "http://chatserver/", className = "client.AdminSignOnOff")
+    @ResponseWrapper(localName = "adminSignOnOffResponse", targetNamespace = "http://chatserver/", className = "client.AdminSignOnOffResponse")
+    @Action(input = "http://chatserver/ChatServer/adminSignOnOffRequest", output = "http://chatserver/ChatServer/adminSignOnOffResponse")
+    public boolean adminSignOnOff(
         @WebParam(name = "name", targetNamespace = "")
         String name,
         @WebParam(name = "pwd", targetNamespace = "")
         String pwd);
+
+    /**
+     * 
+     * @param name
+     * @return
+     *     returns java.util.List<java.lang.String>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "listUsers", targetNamespace = "http://chatserver/", className = "client.ListUsers")
+    @ResponseWrapper(localName = "listUsersResponse", targetNamespace = "http://chatserver/", className = "client.ListUsersResponse")
+    @Action(input = "http://chatserver/ChatServer/listUsersRequest", output = "http://chatserver/ChatServer/listUsersResponse")
+    public List<String> listUsers(
+        @WebParam(name = "name", targetNamespace = "")
+        String name);
 
 }

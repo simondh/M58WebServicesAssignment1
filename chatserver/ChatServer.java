@@ -51,7 +51,7 @@ public class ChatServer {
             User u = userList.getUser(name);
             u.addMessage("Welcome " + name);
             userList.addMessageToAll(systemName, name + " has joined WebChat");
-            System.out.println("User : " + name + " logged on");
+            System.out.println("User : " + name + " logged on" + userList.userCount() + " users connected");
             return true;
         } else {
             System.err.println(name + " is already logged on elsewhere");
@@ -63,7 +63,7 @@ public class ChatServer {
     @WebMethod(operationName = "logOff")
     public boolean logOff(@WebParam(name = "name") final String name) {
         // removes user, returns true if removed OK (false if not found)
-        System.out.println("User : " + name + " logging off");
+        System.out.println("User : " + name + " logging off, " + userList.userCount() + " users connected");
         boolean result = userList.removeUser(name);
         userList.addMessageToAll(systemName, "User : " + name + " has left the chat room");
         return result;
@@ -96,7 +96,7 @@ public class ChatServer {
                            @WebParam(name = "toName") final String toName,
                            @WebParam(name = "mesg") final String mesg) {
         // removes user, returns true if removed OK (false if not found)
-        System.out.println("Private message from : " + fromName + " to : " + toName + " Mesg : " + mesg);
+
         if (userList.userExists(toName)) {
             userList.addMessageToUser (toName, "Private message from : " + fromName + " : " +mesg );
             userList.addMessageToUser (fromName, "Private message sent to : " + toName );
@@ -105,8 +105,8 @@ public class ChatServer {
         }
     }
 
-    @WebMethod(operationName = "adminSigOnOff")
-    public void adminSigOnOff(@WebParam(name = "name") final String name,
+    @WebMethod(operationName = "adminSignOnOff")
+    public boolean adminSignOnOff(@WebParam(name = "name") final String name,
                            @WebParam(name = "pwd") final String pwd) {
         // If pwd matches adminPassword, user becomes admin authorised
         // if pwd is "", unauthorise, else its an error
@@ -115,15 +115,35 @@ public class ChatServer {
             if (pwd.isEmpty()) {
                 u.setAdminUser(false);
                 u.addMessage(systemName + " : Signed OFF as Administrator");
+                return false;
             } else  if (pwd.equals(adminPassword)) {
                 u.setAdminUser(true);
                 u.addMessage(systemName + " : Signed ON as Administrator");
+                return true;
             } else {
                 u.addMessage(systemName + " : Incorrect Admin password");
             }
         } // else user does not exist!
 
+        return false;
+
     } // adminSigonOff
+
+
+    @WebMethod(operationName = "listUsers")
+    public List<String> listUsers(@WebParam(name = "name") final String name) {
+        // IF user is admin authorised, return a list of currently connected web chat usernames
+        User u = userList.getUser(name);
+        if (u == null) {
+            System.err.println("ERROR user : " + name + " not found");
+            return null;
+        }
+        if (!u.isAdminUser()) {
+            u.addMessage(systemName + "You are not authorised as Admin");
+            return null;
+        }
+        return userList.listUserNames(); // its that easy
+    }
 
 
 
