@@ -56,7 +56,13 @@ public class Users {
         return userMap.get(userName);
     }
 
-    public boolean removeUser(String userName) {
+    public User getUser(byte [] userHash) {
+        // returns User object, or Null if not found
+        userName.replaceAll("\\s+", "");  // strip all whitespace
+        return userMap.get(userName);
+    }
+
+    public synchronized boolean removeUser(String userName) {
         // returns True if found and removed
         userName.replaceAll("\\s+", "");  // strip all whitespace
 
@@ -67,7 +73,7 @@ public class Users {
         return userMap.size();
     }
 
-    public List<String> listUserNames() {
+    public synchronized List<String> listUserNames() {
         // returns a list of user names
         List<String> users = new ArrayList<String>();
         for (User u : userMap.values()) {
@@ -76,7 +82,7 @@ public class Users {
         return users;
     }
 
-    public void addMessageToAll (String name, String mesg) {
+    public synchronized void addMessageToAll (String name, String mesg) {
         String newMesg = name + " : " + mesg;
         for (User u :userMap.values()) {
             u.addMessage (newMesg);
@@ -84,7 +90,7 @@ public class Users {
 
     }
 
-    public boolean addMessageToUser (String toName, String mesg) {
+    public synchronized boolean addMessageToUser (String toName, String mesg) {
         User u = getUser(toName);
         if (u == null) return false;
         u.addMessage(mesg);

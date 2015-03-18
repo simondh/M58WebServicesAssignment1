@@ -29,14 +29,14 @@ public interface ChatServer {
      * 
      * @param name
      * @return
-     *     returns boolean
+     *     returns java.lang.String
      */
     @WebMethod
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "logOn", targetNamespace = "http://chatserver/", className = "client.LogOn")
     @ResponseWrapper(localName = "logOnResponse", targetNamespace = "http://chatserver/", className = "client.LogOnResponse")
     @Action(input = "http://chatserver/ChatServer/logOnRequest", output = "http://chatserver/ChatServer/logOnResponse")
-    public boolean logOn(
+    public String logOn(
         @WebParam(name = "name", targetNamespace = "")
         String name);
 

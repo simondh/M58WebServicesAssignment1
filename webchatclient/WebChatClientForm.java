@@ -23,6 +23,7 @@ public class WebChatClientForm extends javax.swing.JFrame {
     private String signonName = "";   // Name used to connect to chat Server
     private boolean signedOn = false; // Signed on?
     private boolean admin = false;    // signed on as Admin ?
+    private byte[] myHash;            // hash identified returned from server
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem adminListNamesMenuItem;
@@ -282,10 +283,14 @@ public class WebChatClientForm extends javax.swing.JFrame {
     * logon web service
      */
     private boolean logon(java.lang.String name) {
-        boolean result;
+        byte[] result;
         result = getChatServerPort().logOn(name);
-        getMessages();
-        return result;
+        if (result != null) {
+            getMessages();
+            myHash = result;
+            return true;
+        }
+        return false;
     }
 
     /*
