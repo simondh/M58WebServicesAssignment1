@@ -12,7 +12,7 @@ import java.util.Stack;
  * @author Simon Hewitt
  *         Manages the list of users
  *         For a simple use (as in this app), instantiate ONCE only
- *         (Although no reason why theere should not be multiple lists)
+ *         (Although no reason why there should not be multiple lists)
  */
 
 public class Users {
@@ -20,8 +20,8 @@ public class Users {
 
     private static final int timeoutThreshold = 6;
     private static final int timeoutMillis = 5000;
-    // Check every Millis milliseconds, and if no activity for Threshold ticks, delete the user
-    // user (client) Probably killed program or network disconnect
+    // Check every timeoutMillis milliseconds, and if no activity for timeoutThreshold ticks, delete the user
+    // because user (client) Probably killed program or network disconnect
 
     public Users() {
         Thread t = new Thread(new Runnable() {
@@ -98,6 +98,9 @@ public class Users {
         while (true) {
 
             Iterator entries = userMap.entrySet().iterator();
+            // Use this more complex for of iterator, as it allows delete within the loop
+            // simpler iteratirs raise exception if element is deleted in the loop
+
             while (entries.hasNext()) {
                 Map.Entry entry = (Map.Entry) entries.next();
                 String key = (String)entry.getKey();
