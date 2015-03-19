@@ -14,7 +14,6 @@ public class User {
     private boolean adminUser;
     private List<String> messageList = new ArrayList<String>();
     private int timeoutCount;  // if this reaches a threshold, user must be disconnected, delete
-    private String userHash;
 
     User(String name) {
         name.replaceAll("\\s+", "");  // strip all whitespace
@@ -23,8 +22,6 @@ public class User {
         timeoutCount = 0;
     }
 
-    public String  getUserHash() { return userHash;}
-    public void setUserHash (String  newhash) {userHash = newhash;}
 
 
     public String getUserName() {

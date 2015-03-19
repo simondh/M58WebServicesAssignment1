@@ -56,11 +56,6 @@ public class Users {
         return userMap.get(userName);
     }
 
-    public User getUser(byte [] userHash) {
-        // returns User object, or Null if not found
-        userName.replaceAll("\\s+", "");  // strip all whitespace
-        return userMap.get(userName);
-    }
 
     public synchronized boolean removeUser(String userName) {
         // returns True if found and removed
@@ -112,7 +107,7 @@ public class Users {
                 String key = (String)entry.getKey();
                 User u = (User)entry.getValue();
                 if (u.tick() > timeoutThreshold) {
-                    System.err.println("User : " + key + " timed out and deleted" + this.userCount() + " users connected");
+                    System.err.println("User : " + key + " timed out and deleted" + this.userCount() + "  users connected");
                     entries.remove();
                 }
             }

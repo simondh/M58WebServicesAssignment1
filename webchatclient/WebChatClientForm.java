@@ -14,6 +14,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.*;
+import java.lang.Throwable;
+import java.lang.Exception;
 
 /**
  * @author simon hewitt 806068
@@ -23,7 +26,6 @@ public class WebChatClientForm extends javax.swing.JFrame {
     private String signonName = "";   // Name used to connect to chat Server
     private boolean signedOn = false; // Signed on?
     private boolean admin = false;    // signed on as Admin ?
-    private byte[] myHash;            // hash identified returned from server
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem adminListNamesMenuItem;
@@ -53,6 +55,7 @@ public class WebChatClientForm extends javax.swing.JFrame {
      * Creates new form WebChatClientForm
      */
     public WebChatClientForm() {
+        System.out.println("Starting");
         initComponents();
         manualInitComponents();  // NetBeans regenerates initComponents completely,
         // so any local adjustments must go here
@@ -123,6 +126,7 @@ public class WebChatClientForm extends javax.swing.JFrame {
                     adminSignOnMenuItem.setEnabled(true);
                     startMessageListener();
                     signOnButton.setText("Sign Off");
+                    getMessages();
                 } else {
                     signonName = "";
                     signedOn = false;
@@ -132,6 +136,8 @@ public class WebChatClientForm extends javax.swing.JFrame {
                 }
             } catch (Exception e) {
                 System.out.println("Error in Web Service");
+                e.printStackTrace();
+                //throw new OtherException(e);  // stack trace and cause text
             }
         } else logoff();
 
@@ -196,10 +202,22 @@ public class WebChatClientForm extends javax.swing.JFrame {
             return;
         }
 
-        String adminPwd = JOptionPane.showInputDialog(this,
-                "Enter the Admin password",
-                "Password",
-                JOptionPane.QUESTION_MESSAGE);
+        String adminPwd;
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Enter Admin password:");
+        JPasswordField pass = new JPasswordField(20);
+        panel.add(label);
+        panel.add(pass);
+        String[] options = new String[]{"OK", "Cancel"};
+        int option = JOptionPane.showOptionDialog(null, panel, "Admin User",
+                JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, options, options[1]);
+        if(option == 0) // OKJ pressed
+        {
+            adminPwd = new String (pass.getPassword());
+        } else {
+            return;
+        }
 
         if (adminPwd.length() == 0) return;
 
@@ -274,8 +292,13 @@ public class WebChatClientForm extends javax.swing.JFrame {
     * Get the port for the web service. A utility method
      */
     private ChatServer getChatServerPort() {
-        ChatServer_Service service = new ChatServer_Service();
-        ChatServer port = service.getChatServerPort();
+        ChatServer port = null;
+        try {
+            ChatServer_Service service = new ChatServer_Service();
+            port = service.getChatServerPort();
+        } catch (Exception e) {
+            System.err.println("WebChatClientForm:getChatServerPort error : " + e);
+        }
         return port;
     }
 
@@ -283,14 +306,9 @@ public class WebChatClientForm extends javax.swing.JFrame {
     * logon web service
      */
     private boolean logon(java.lang.String name) {
-        byte[] result;
-        result = getChatServerPort().logOn(name);
-        if (result != null) {
-            getMessages();
-            myHash = result;
-            return true;
-        }
-        return false;
+
+        return  (getChatServerPort().logOn(name) != null);
+
     }
 
     /*

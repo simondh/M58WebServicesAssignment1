@@ -2,7 +2,7 @@
 //package chatserver;
 
 import javax.xml.ws.Endpoint;
-import chatserver.*;
+import chatserver.ChatServer;
 
 /**
  *

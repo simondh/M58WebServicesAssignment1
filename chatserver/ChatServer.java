@@ -71,11 +71,9 @@ public class ChatServer {
         if (userList.addNewUser(name)) {
             User u = userList.getUser(name);
             u.addMessage("Welcome " + name);
-            String  newHash = getHash(name);
-            u.setUserHash(newHash);
             userList.addMessageToAll(systemName, name + " has joined WebChat");
             System.out.println("User : " + name + " logged on, " + userList.userCount() + " users connected");
-            return newHash;
+            return name;
         } else {
             System.err.println(name + " is already logged on elsewhere");
             return null;
@@ -182,25 +180,7 @@ public class ChatServer {
         }
         return userList.listUserNames(); // its that easy
     }
-    /*
-    * Calculates a hash from the name and time
-     */
-    private  String getHash(String name) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-            String uniq = new String (name + sdf.toLocalizedPattern());
-            MessageDigest digest = MessageDigest.getInstance("MD5");
-            System.out.println("Input : " + uniq);
-            byte[] h =  digest.digest(uniq.getBytes("UTF-8"));
-            String r = new String(h, "UTF-8");
-            System.out.println("Output : " + r);
-            return r;
-        } catch (NoSuchAlgorithmException ex) {
-            throw new RuntimeException("No MD5 implementation? Really?");
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException("No UTF-8 encoding? Really?");
-        }
-    }
+
 
 }  // end class ChatServer
 

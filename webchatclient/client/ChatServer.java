@@ -29,21 +29,6 @@ public interface ChatServer {
      * 
      * @param name
      * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "logOn", targetNamespace = "http://chatserver/", className = "client.LogOn")
-    @ResponseWrapper(localName = "logOnResponse", targetNamespace = "http://chatserver/", className = "client.LogOnResponse")
-    @Action(input = "http://chatserver/ChatServer/logOnRequest", output = "http://chatserver/ChatServer/logOnResponse")
-    public String logOn(
-        @WebParam(name = "name", targetNamespace = "")
-        String name);
-
-    /**
-     * 
-     * @param name
-     * @return
      *     returns boolean
      */
     @WebMethod
@@ -52,6 +37,21 @@ public interface ChatServer {
     @ResponseWrapper(localName = "logOffResponse", targetNamespace = "http://chatserver/", className = "client.LogOffResponse")
     @Action(input = "http://chatserver/ChatServer/logOffRequest", output = "http://chatserver/ChatServer/logOffResponse")
     public boolean logOff(
+        @WebParam(name = "name", targetNamespace = "")
+        String name);
+
+    /**
+     * 
+     * @param name
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "logOn", targetNamespace = "http://chatserver/", className = "client.LogOn")
+    @ResponseWrapper(localName = "logOnResponse", targetNamespace = "http://chatserver/", className = "client.LogOnResponse")
+    @Action(input = "http://chatserver/ChatServer/logOnRequest", output = "http://chatserver/ChatServer/logOnResponse")
+    public String logOn(
         @WebParam(name = "name", targetNamespace = "")
         String name);
 
