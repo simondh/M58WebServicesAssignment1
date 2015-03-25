@@ -8,8 +8,6 @@ if [[ -n $(lsof -ti:8080) ]]; then
 fi
 jobs
 
-
-echo building Publisher
 export CLASSPATH=${CLASSPATH}:.
 echo building server
 javac -cp webchatclient/ chatserver/*.java
@@ -23,8 +21,8 @@ echo Generate WSDL classes etc
 wsimport -p client -keep http://localhost:8080/wc?wsdl
 echo Building client
 rm *.class
-javac WebChatClientForm.java
 cd ..
+javac webchatclient/*.java
 
 echo All built, starting three clients
 java webchatclient/WebChatClientForm&

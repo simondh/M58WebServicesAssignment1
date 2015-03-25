@@ -193,7 +193,7 @@ public class ChatServer {
             return ;
         }
         // start shutdown sequence
-        this.addMessage("SYSTEM", "Server is shutting down in 10 seconds");
+        userList.addMessageToAll("SYSTEM", "Server is shutting down in 10 seconds");
         System.err.println("ChatServer:shutServer SHUTTING DOWN IN 10 SECONDS");
 
         exitTimer.schedule(exitApp, new Date(System.currentTimeMillis()+10*1000));
