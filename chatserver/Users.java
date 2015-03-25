@@ -1,12 +1,10 @@
 package chatserver;
 
-import java.lang.Override;
-import java.lang.Runnable;
-import java.lang.String;
-import java.lang.Thread;
 import java.util.ArrayList;
-import java.util.*;
-import java.util.Stack;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Simon Hewitt
@@ -33,35 +31,42 @@ public class Users {
         t.start();
     }
 
+    public static String cleanName (String name)
+    {
+        String newName = name.replaceAll("\\s+", "");
+        return newName;
+    }
+    
+    
     public boolean addNewUser(String userName) {
         // returns false if username already registered, else adds user and returns True
-        userName.replaceAll("\\s+", "");  // strip all whitespace
+        String newName = cleanName(userName);  // strip all whitespace
 
-        if (userExists(userName)) return false;
+        if (userExists(newName)) return false;
 
-        User newUser = new User(userName);
-        userMap.put(userName, newUser);
+        User newUser = new User(newName);
+        userMap.put(newName, newUser);
         return true;
     }
 
     public boolean userExists(String userName) {
-        userName.replaceAll("\\s+", "");  // strip all whitespace
+        String newName = cleanName(userName);  // strip all whitespace
         // returns True if this user exists
-        return (userMap.get(userName) != null);
+        return (userMap.get(newName) != null);
     }
 
     public User getUser(String userName) {
         // returns User object, or Null if not found
-        userName.replaceAll("\\s+", "");  // strip all whitespace
-        return userMap.get(userName);
+        String newName = cleanName(userName);  // strip all whitespace
+        return userMap.get(newName);
     }
 
 
     public synchronized boolean removeUser(String userName) {
         // returns True if found and removed
-        userName.replaceAll("\\s+", "");  // strip all whitespace
+        String newName = cleanName(userName);  // strip all whitespace
 
-        return (userMap.remove(userName) != null);  // remove returns removed object, or null if not present
+        return (userMap.remove(newName) != null);  // remove returns removed object, or null if not present
     }
 
     public int userCount() {

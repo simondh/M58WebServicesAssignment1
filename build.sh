@@ -11,12 +11,10 @@ jobs
 
 echo building Publisher
 export CLASSPATH=${CLASSPATH}:.
-#echo $CLASSPATH
-javac -cp . WebChatPublisher.java
 echo building server
 javac -cp webchatclient/ chatserver/*.java
 echo Running publisher
-java WebChatPublisher&
+java chatserver/WebChatPublisher&
 echo Wait for server to start up
 sleep 2
 
@@ -28,3 +26,7 @@ rm *.class
 javac WebChatClientForm.java
 cd ..
 
+echo All built, starting three clients
+java webchatclient/WebChatClientForm&
+java webchatclient/WebChatClientForm&
+java webchatclient/WebChatClientForm&

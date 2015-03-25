@@ -1,29 +1,15 @@
 package chatserver;
 
-import chatserver.*;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import client.ChatServer_Service;
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.security.MessageDigest;
-import java.security.Security;
-import java.security.*;
-import java.io.UnsupportedEncodingException;
-
-/**
- * @author simon
- */
+import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
 
 /*
 * This class is the core chat server.
@@ -41,6 +27,7 @@ public class ChatServer {
     private static final String configFileName  = "ChatServer.dat";
     private static final String defaultAdminPassword  = "EMERGENCYepidauros";
     private static String adminPassword;
+    private Timer exitTimer = new Timer();
 
     public ChatServer ()
     {
@@ -48,11 +35,11 @@ public class ChatServer {
         try(BufferedReader br = new BufferedReader(new FileReader(configFileName))) {
             String line = br.readLine();
             adminPassword = line;
-            System.out.println("Read configuration data OK ");
+            System.out.println("ChatServer:ChatServer Read configuration data OK ");
         } catch (IOException e) {
-            System.err.println("Cannot read connfiguration  file : " + configFileName);
+            System.err.println("ChatServer:ChatServer Cannot read connfiguration  file : " + configFileName);
             // set adminPassword to default value
-            System.err.println("WARNING using emergency Admin passsword");
+            System.err.println("ChatServer:ChatServer WARNING using emergency Admin passsword");
             adminPassword =defaultAdminPassword;
         }
     }
@@ -68,14 +55,15 @@ public class ChatServer {
     public String logOn(@WebParam(name = "name") final String name) {
         // Add new user, returns 0 if OK or return -ve error if already signed on
 
-        if (userList.addNewUser(name)) {
-            User u = userList.getUser(name);
-            u.addMessage("Welcome " + name);
-            userList.addMessageToAll(systemName, name + " has joined WebChat");
-            System.out.println("User : " + name + " logged on, " + userList.userCount() + " users connected");
-            return name;
+        String cleanName = Users.cleanName(name);
+        if (userList.addNewUser(cleanName)) {
+            User u = userList.getUser(cleanName);
+            u.addMessage("Welcome " + cleanName);
+            userList.addMessageToAll(systemName, cleanName + " has joined WebChat");
+            System.out.println("ChatServer:logOn User : " + cleanName + " logged on, " + userList.userCount() + " users connected");
+            return cleanName;
         } else {
-            System.err.println(name + " is already logged on elsewhere");
+            System.err.println(cleanName + " is already logged on elsewhere (ChatServer:logOn)");
             return null;
         }
     }
@@ -86,9 +74,10 @@ public class ChatServer {
     @WebMethod(operationName = "logOff")
     public boolean logOff(@WebParam(name = "name") final String name) {
         // removes user, returns true if removed OK (false if not found)
-        boolean result = userList.removeUser(name);
-        System.out.println("User : " + name + " logging off, " + userList.userCount() + " users connected");
-        userList.addMessageToAll(systemName, "User : " + name + " has left the chat room");
+        String cleanName = Users.cleanName(name);
+        boolean result = userList.removeUser(cleanName);
+        System.out.println("ChatServer:logOff User : " + cleanName + " logging off, " + userList.userCount() + " users connected");
+        userList.addMessageToAll(systemName, "User : " + cleanName + " has left the chat room");
         return result;
     }
 
@@ -98,9 +87,10 @@ public class ChatServer {
     @WebMethod(operationName = "allMessages")
     public List<String> allMessages(@WebParam(name = "name") final String name) {
         // removes user, returns true if removed OK (false if not found)
-        User u = userList.getUser(name);
+        String cleanName = Users.cleanName(name);
+        User u = userList.getUser(cleanName);
         if (u == null) {
-            System.err.println("ERROR user : " + name + " not found");
+            System.err.println("ChatServer:allMessages ERROR user : " + cleanName + " not found");
             return null;
         }
         return (u.allMessages());
@@ -113,8 +103,9 @@ public class ChatServer {
     public void addMessage(@WebParam(name = "name") final String name,
                            @WebParam(name = "mesg") final String mesg) {
         // removes user, returns true if removed OK (false if not found)
-        if (userList.userExists(name)) {
-            userList.addMessageToAll(name, mesg);
+        String cleanName = Users.cleanName(name);
+        if (userList.userExists(cleanName)) {
+            userList.addMessageToAll(cleanName, mesg);
         }
     }
 
@@ -123,11 +114,12 @@ public class ChatServer {
     * Send a private message - returns error if touser does not exist
      */
     @WebMethod(operationName = "privateMessage")
-    public void privateMessage(@WebParam(name = "fromName") final String fromName,
-                           @WebParam(name = "toName") final String toName,
+    public void privateMessage(@WebParam(name = "fromName") final String fromNameIN,
+                           @WebParam(name = "toName") final String toNameIN,
                            @WebParam(name = "mesg") final String mesg) {
         // removes user, returns true if removed OK (false if not found)
-
+        String fromName = Users.cleanName(fromNameIN);
+        String toName = Users.cleanName(toNameIN);
         if (userList.userExists(toName)) {
             userList.addMessageToUser (toName, "Private message from : " + fromName + " : " +mesg );
             userList.addMessageToUser (fromName, "Private message sent to : " + toName );
@@ -140,10 +132,11 @@ public class ChatServer {
     * Sign ON or OFF as an Admin user
      */
     @WebMethod(operationName = "adminSignOnOff")
-    public boolean adminSignOnOff(@WebParam(name = "name") final String name,
+    public boolean adminSignOnOff(@WebParam(name = "name") final String nameIN,
                            @WebParam(name = "pwd") final String pwd) {
         // If pwd matches adminPassword, user becomes admin authorised
         // if pwd is "", unauthorise, else its an error
+        String name = Users.cleanName(nameIN);
         if (userList.userExists(name)) {
             User u = userList.getUser(name);
             if (pwd.isEmpty()) {
@@ -167,11 +160,12 @@ public class ChatServer {
     * If the sender is authorised, send all users as a privet message sequence
      */
     @WebMethod(operationName = "listUsers")
-    public List<String> listUsers(@WebParam(name = "name") final String name) {
+    public List<String> listUsers(@WebParam(name = "name") final String nameIN) {
         // IF user is admin authorised, return a list of currently connected web chat usernames
+        String name = Users.cleanName(nameIN);
         User u = userList.getUser(name);
         if (u == null) {
-            System.err.println("ERROR user : " + name + " not found");
+            System.err.println("ChatServer:listUsers ERROR user : " + name + " not found");
             return null;
         }
         if (!u.isAdminUser()) {
@@ -181,7 +175,38 @@ public class ChatServer {
         return userList.listUserNames(); // its that easy
     }
 
+      /*
+    * If the sender is authorised, shuts down the serever
+     */
+    @WebMethod(operationName = "shutServer")
+    public void shutServer (@WebParam(name = "name") final String nameIN) {
+        // IF user is admin authorised, return a list of currently connected web chat usernames
+        String name = Users.cleanName(nameIN);
+        User u = userList.getUser(name);
+        if (u == null) {
+            System.err.println("ChatServer:shutServer ERROR user : " + name + " not found");
+            return ;
+        }
+        if (!u.isAdminUser()) {
+            System.err.println("ChatServer:shutServer ERROR user : " + name + " not authorised");
+            u.addMessage(systemName + "You are not authorised as Admin");
+            return ;
+        }
+        // start shutdown sequence
+        this.addMessage("SYSTEM", "Server is shutting down in 10 seconds");
+        System.err.println("ChatServer:shutServer SHUTTING DOWN IN 10 SECONDS");
 
+        exitTimer.schedule(exitApp, new Date(System.currentTimeMillis()+10*1000));
+
+    }
+
+    
+    private TimerTask exitApp = new TimerTask() {
+    public void run() {
+        System.err.println("ChatServer:shutServer SHUTTING DOWN NOW");
+        System.exit(0);
+        }
+    };
 }  // end class ChatServer
 
 

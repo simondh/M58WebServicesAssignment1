@@ -2,17 +2,18 @@ ReadMe.txt
 
 Simon Hewitt 806068
 
-M58 Web Servioces assignment 1
+M58 Web Services assignment 1
 
 Directory & file structure:
 
 <base directory> cmdLineVersion on my machine, should not matter
-  WebChatPublisher.java   Class that publishes the web chat server
+
   build.sh  Builds all, including creating all classes from WSDL, web chat server must be runnable for client to build
   ChatServer.dat // configuration file (only one item in it, the admin password)
   
   chatserver
 	// Chat server classes
+  	WebChatPublisher.java   Class that publishes the web chat server
 	ChatServer.java
 	User.java  // Class for a single user
 	Users.java // ArrayList of users, and many methods for managing the user list
@@ -26,11 +27,10 @@ Needs : CLASSPATH :.:./webchatclient/
 
 build.sh does:
   1 kill existing webchatserver process (if any)
-  2 javac WebChatPublisher
-  3 javac all java files in webchatserver
-  4 runs the server as a detached process
-  5 Waits for it to start
-  6 runs wsimport to gernerate classes from the WSDL
-  7 Builds the client java 
+  2 javac all java files in webchatserver
+  3 runs the server as a detached process
+  4 Waits for it to start
+  5 runs wsimport to generate classes from the WSDL
+  6 Builds the client java 
 
 

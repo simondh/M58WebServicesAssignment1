@@ -24,9 +24,11 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _ShutServerResponse_QNAME = new QName("http://chatserver/", "shutServerResponse");
     private final static QName _AllMessages_QNAME = new QName("http://chatserver/", "allMessages");
     private final static QName _LogOff_QNAME = new QName("http://chatserver/", "logOff");
     private final static QName _PrivateMessage_QNAME = new QName("http://chatserver/", "privateMessage");
+    private final static QName _ShutServer_QNAME = new QName("http://chatserver/", "shutServer");
     private final static QName _AdminSignOnOffResponse_QNAME = new QName("http://chatserver/", "adminSignOnOffResponse");
     private final static QName _ListUsers_QNAME = new QName("http://chatserver/", "listUsers");
     private final static QName _ListUsersResponse_QNAME = new QName("http://chatserver/", "listUsersResponse");
@@ -135,6 +137,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ShutServer }
+     * 
+     */
+    public ShutServer createShutServer() {
+        return new ShutServer();
+    }
+
+    /**
      * Create an instance of {@link AllMessages }
      * 
      */
@@ -156,6 +166,23 @@ public class ObjectFactory {
      */
     public PrivateMessage createPrivateMessage() {
         return new PrivateMessage();
+    }
+
+    /**
+     * Create an instance of {@link ShutServerResponse }
+     * 
+     */
+    public ShutServerResponse createShutServerResponse() {
+        return new ShutServerResponse();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ShutServerResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://chatserver/", name = "shutServerResponse")
+    public JAXBElement<ShutServerResponse> createShutServerResponse(ShutServerResponse value) {
+        return new JAXBElement<ShutServerResponse>(_ShutServerResponse_QNAME, ShutServerResponse.class, null, value);
     }
 
     /**
@@ -183,6 +210,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://chatserver/", name = "privateMessage")
     public JAXBElement<PrivateMessage> createPrivateMessage(PrivateMessage value) {
         return new JAXBElement<PrivateMessage>(_PrivateMessage_QNAME, PrivateMessage.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ShutServer }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://chatserver/", name = "shutServer")
+    public JAXBElement<ShutServer> createShutServer(ShutServer value) {
+        return new JAXBElement<ShutServer>(_ShutServer_QNAME, ShutServer.class, null, value);
     }
 
     /**

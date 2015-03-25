@@ -1,13 +1,7 @@
-
-//package chatserver;
+package chatserver;
 
 import javax.xml.ws.Endpoint;
-import chatserver.ChatServer;
 
-/**
- *
- * @author simon
- */
 
 
 public class WebChatPublisher {
